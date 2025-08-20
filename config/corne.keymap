@@ -24,6 +24,33 @@
       zmk,display-init-on-wake = "on";
     };
 
+    macros {
+      to_l1_color: to_l1_color {
+        compatible = "zmk,behavior-macro";
+        #binding-cells = <0>;
+        wait-ms = <0>; tap-ms = <0>;
+        bindings = <&macro_tap &to 1>,
+                   <&macro_tap &rgb_ug RGB_COLOR_HSB(120,100,25)>;
+      };
+
+      to_l0_color: to_l0_color {
+        compatible = "zmk,behavior-macro";
+        #binding-cells = <0>;
+        wait-ms = <0>; tap-ms = <0>;
+        bindings = <&macro_tap &to 0>,
+                   <&macro_tap &rgb_ug RGB_COLOR_HSB(45,100,25)>;
+      };
+    };
+
+    behaviors {
+      l0_l1_toggle_colors: l0_l1_toggle_colors {
+        compatible = "zmk,behavior-tap-dance";
+        #binding-cells = <0>;
+        tapping-term-ms = <200>;
+        bindings = <&to_l1_color>, <&to_l0_color>; 
+      };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -65,7 +92,7 @@
 
         adju_layer {
             bindings = <
-                &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4               &tog 1 &none &none &none &kp C_PLAY_PAUSE &kp C_MUTE
+                &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4               &l0_l1_toggle_colors &none &none &none &kp C_PLAY_PAUSE &kp C_MUTE
                 &rgb_ug RGB_TOG &none &none &none &none &none                                             &none &none &none &none &kp C_NEXT &kp C_VOL_UP
                 &none &none &none &none &none &none                                                       &none &none &none &none &kp C_PREV &kp C_VOL_DN
                                      &kp LGUI &trans &kp SPACE                                            &kp RET  &trans &kp RALT
